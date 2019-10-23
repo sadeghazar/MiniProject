@@ -9,3 +9,18 @@ services:
       - ./app:/app
     command: >
       sh -c "python api.py"
+    environment:
+      - DB_HOST=db
+      - DB_NAME=usersdb
+      - DB_USER=userpg
+      - DB_PASS=pass123
+    depends_on:
+      - db
+
+
+  db:
+    image: postgres:12-alpine
+    environment:
+      - POSTGRES_DB=usersdb
+      - POSTGRES_PASSWORD=pass123
+      - POSTGRES_USER=userpg

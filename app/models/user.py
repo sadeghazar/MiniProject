@@ -14,7 +14,7 @@ class UserModel(db.Model):
     birthDate = db.Column(db.DateTime, nullable=True)
 
     def __init__(self, username: str, password: str, firstName: str,
-                 lastName: str, phoneNumber: str, birthDate):
+                 lastName: str, phoneNumber: str, birthDate = None):
         self.username = username
         self.password = self.generate_hash(password)
         self.firstName = firstName
@@ -48,7 +48,6 @@ class UserModel(db.Model):
     def save_to_db(self) -> "UserModel":
         db.session.add(self)
         db.session.commit()
-        return self
 
     def delete_from_db(self) -> None:
         db.session.delete(self)

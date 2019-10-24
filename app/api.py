@@ -25,9 +25,14 @@ migrate = Migrate(app, db)
 
 jwt = JWTManager(app)
 
+
 @app.before_first_request
 def create_tables():
     db.create_all()
+    from app.models.user import UserModel
+    if not UserModel.find_by_username("admin"):
+        UserModel(username="admin", password="123", firstName="admin", lastName="admin"
+                  , phoneNumber="123467890").save_to_db()
 
 
 api.add_resource(User, '/user/<int:user_id>', "/user")

@@ -6,7 +6,7 @@ from flask_migrate import Migrate
 from app.db import db
 from app.ma import ma
 from app.resources.user import User
-from resources.security import UserLogin
+from app.resources.security import UserLogin, TokenRefresh
 
 app = Flask(__name__)
 api = Api(app)
@@ -32,7 +32,7 @@ def create_tables():
 
 api.add_resource(User, '/user/<int:user_id>', "/user")
 api.add_resource(UserLogin, '/login')
-# api.add_resource(TokenRefresh, '/token/refresh')
+api.add_resource(TokenRefresh, '/token/refresh')
 
 db.init_app(app)
 ma.init_app(app)

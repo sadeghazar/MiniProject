@@ -5,7 +5,7 @@ import string
 from datetime import datetime
 import pytest
 from app import api
-from models.user import UserModel
+from app.models.user import UserModel
 
 
 @pytest.fixture()
@@ -25,26 +25,21 @@ def test_user(client):
         phone_number="12345",
         birth_date=datetime.now().strftime('%Y-%m-%dT%H:%M:%S')
     ))
-    # user_id = json.loads(ret.get_data(as_text=True))["user_id"]
-    # print(user_id)
-    # ret = client.get("/user/{}".format(user.id))
-    #
-    # assert int(user_id) > 0
-    #
-    # print('/user/{}'.format(user_id))
-    # ret = client.put('/user/{}'.format(user_id), data=dict(
-    #     first_name=rname,
-    #     last_name="Azarkaman",
-    #     phone_number="Pass123",
-    #     birth_date=datetime.now().strftime('%Y-%m-%dT%H:%M:%S'),
-    # ))
-    # assert ret.status_code == 204
-    # ret = client.get("/user/MAzarkamanTest")
-    # name = json.loads(ret.get_data(as_text=True))["first_name"]
-    # assert name == rname
-    # userid = json.loads(ret.get_data(as_text=True))["id"]
-    # ret = client.delete('/user/{}'.format(userid))
-    # assert ret.status_code is 202
+    user_id = json.loads(ret.get_data(as_text=True))["user_id"]
+
+    assert int(user_id) > 0
+
+    ret = client.put('/user/{}'.format(user_id), data=dict(
+        first_name=uname,
+        last_name="Azarkaman",
+        phone_number="Pass123",
+        birth_date=datetime.now().strftime('%Y-%m-%dT%H:%M:%S'),
+    ))
+    assert ret.status_code == 204
+    name = UserModel.find_by_id(user_id).firstName
+    assert name == uname
+    ret = client.delete('/user/{}'.format(user_id))
+    assert ret.status_code is 202
 
 
 def randomString(stringLength=10):

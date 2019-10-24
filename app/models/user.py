@@ -48,6 +48,7 @@ class UserModel(db.Model):
     def save_to_db(self) -> "UserModel":
         db.session.add(self)
         db.session.commit()
+        return self
 
     def delete_from_db(self) -> None:
         db.session.delete(self)

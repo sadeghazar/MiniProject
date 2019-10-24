@@ -43,8 +43,9 @@ class User(Resource):
         ret = UserModel(username=username, password=password, firstName=first_name,
                         lastName=last_name, phoneNumber=phone_number,
                         birthDate=birth_date).save_to_db()
-
-        return {"Message": "Created", "user_id": ret.id}, 201
+        if ret:
+            return {"Message": "Created", "user_id": ret.id}, 201
+        return {"Message": "Error", "user_id": ret.id}, 500
 
     def put(self, user_id: int):
         try:

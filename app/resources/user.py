@@ -1,4 +1,6 @@
 from datetime import datetime
+
+from flask_jwt_extended.view_decorators import jwt_required
 from flask_restful import Resource, reqparse
 from flask import request
 from app.models.user import UserModel
@@ -18,7 +20,7 @@ user_schema = UserSchema()
 
 
 class User(Resource):
-
+    @jwt_required
     def get(self, user_id: int):
         user = UserModel.find_by_id(user_id)
         if user:

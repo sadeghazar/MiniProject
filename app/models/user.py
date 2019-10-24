@@ -1,5 +1,5 @@
 from app.db import db
-from passlib.hash import bcrypt
+from passlib.hash import pbkdf2_sha256 as sha256
 
 
 class UserModel(db.Model):
@@ -16,7 +16,7 @@ class UserModel(db.Model):
     def __init__(self, username: str, password: str, firstName: str,
                  lastName: str, phoneNumber: str, birthDate):
         self.username = username
-        self.password = bcrypt.hash(password)
+        self.password = self.generate_hash(password)
         self.firstName = firstName
         self.lastName = lastName
         self.phoneNumber = phoneNumber
@@ -27,8 +27,12 @@ class UserModel(db.Model):
         return cls.query.filter_by(username=username).first()
 
     @classmethod
-    def login(cls, username, password) -> "UserModel":
-        return cls.query.filter_by(username=username, password=bcrypt.hash(password)).first()
+    def login(cls, username: str, password: str) -> "UserModel":
+        user = cls.query.filter_by(username=username).first()
+        if user:
+            if cls.verify_hash(password, user.password):
+                return user
+        return None
 
     @classmethod
     def find_by_id(cls, _id: int) -> "UserModel":
@@ -49,3 +53,11 @@ class UserModel(db.Model):
     def delete_from_db(self) -> None:
         db.session.delete(self)
         db.session.commit()
+
+    @staticmethod
+    def generate_hash(password):
+        return sha256.hash(password)
+
+    @staticmethod
+    def verify_hash(password, hash):
+        return sha256.verify(password, hash)

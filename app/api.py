@@ -1,11 +1,12 @@
 import os
-
 from flask import Flask
+from flask_jwt_extended.jwt_manager import JWTManager
 from flask_restful import Api
 from flask_migrate import Migrate
 from app.db import db
-from app.resources.user import User
 from app.ma import ma
+from app.resources.user import User
+from resources.security import UserLogin
 
 app = Flask(__name__)
 api = Api(app)
@@ -18,8 +19,11 @@ POSTGRES = {
 app.config["SQLALCHEMY_DATABASE_URI"] = 'postgresql://{}:{}@{}/{}' \
     .format(POSTGRES['user'], POSTGRES['password'], POSTGRES['host'], POSTGRES['db'])
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+app.config['JWT_SECRET_KEY'] = 'rotyiutoiwuerotiupotijlkvmc'
+
 migrate = Migrate(app, db)
 
+jwt = JWTManager(app)
 
 @app.before_first_request
 def create_tables():
@@ -27,6 +31,8 @@ def create_tables():
 
 
 api.add_resource(User, '/user/<int:user_id>', "/user")
+api.add_resource(UserLogin, '/login')
+# api.add_resource(TokenRefresh, '/token/refresh')
 
 db.init_app(app)
 ma.init_app(app)

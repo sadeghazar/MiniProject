@@ -1,4 +1,4 @@
-version: "3"
+version: "3.5"
 services:
   app:
     build:
@@ -10,13 +10,16 @@ services:
     command: >
       sh -c "python api.py"
     environment:
+      - FLASK_ENV=development
+      - FLASK_APP=api.py
       - DB_HOST=db
       - DB_NAME=usersdb
       - DB_USER=userpg
       - DB_PASS=pass123
     depends_on:
       - db
-
+    networks:
+      - postgres
 
   db:
     image: postgres:12-alpine
@@ -24,3 +27,27 @@ services:
       - POSTGRES_DB=usersdb
       - POSTGRES_PASSWORD=pass123
       - POSTGRES_USER=userpg
+    networks:
+      - postgres
+
+  pgadmin:
+    container_name: pgadmin_container
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL:-pgadmin4@pgadmin.org}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD:-admin}
+    volumes:
+      - pgadmin:/root/.pgadmin
+    ports:
+      - "${PGADMIN_PORT:-5050}:80"
+    networks:
+      - postgres
+    depends_on:
+      - db
+
+networks:
+  postgres:
+    driver: bridge
+
+volumes:
+  pgadmin:

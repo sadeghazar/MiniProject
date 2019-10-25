@@ -61,11 +61,11 @@ for example:
     curl --location --request PUT "http://127.0.0.1:5000/user/46" \
     --header "Authorization: Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE1NzE5ODk5NTcsIm5iZiI6MTU3MTk4OTk1NywianRpIjoiOGYyNmYzMmEtM2FmNi00YTQwLTljOWUtMmE2MzBmMjk5OTIwIiwiZXhwIjoxNTcxOTkwODU3LCJpZGVudGl0eSI6ImFkbWluIiwiZnJlc2giOmZhbHNlLCJ0eXBlIjoiYWNjZXNzIn0.MmxJijfmXgwj5OOtNF_02rlR-ivxl2-PBfPdsTlCsck" \
     --header "Content-Type: multipart/form-data; boundary=--------------------------381364090129897866552550" \
-    --form "first_name=sa" \
-    --form "last_name=d" \
-    --form "phone_number=d" \
+    --form "first_name=newname" \
+    --form "last_name=newlastname" \
+    --form "phone_number=012222222" \
     --form "birth_date=2019-10-24T15:43:24" \
-    --form "username=asd" \
+    --form "username=username" \
     --form "password=234"
 
 
@@ -81,12 +81,16 @@ in order to run tests use this command:
      sudo docker-compose run app sh -c "pytest -v"
 
 ## Run pgAdmin
-After running docker-compose you can go to 
+After running docker-compose you can go to
+
 [http://localhost:5050](http://localhost:5050)
 default credentials is:
+
 **username = pgadmin4@pgadmin.org
 password = admin**
+
 After log in to panel add server and use '**db'** in hostname/address
+
 **username=userpg
 password=pass123**
 

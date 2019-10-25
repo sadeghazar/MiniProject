@@ -29,6 +29,7 @@ jwt = JWTManager(app)
 @app.before_first_request
 def create_tables():
     db.create_all()
+    db.session.commit()
     from app.models.user import UserModel
     if not UserModel.find_by_username("admin"):
         UserModel(username="admin", password="123", firstName="admin", lastName="admin"

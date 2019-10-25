@@ -86,11 +86,11 @@ After running docker-compose you can go to
 [http://localhost:5050](http://localhost:5050)
 default credentials is:
 
-**username = pgadmin4@pgadmin.org
-password = admin**
+username = **pgadmin4@pgadmin.org**
+password = **admin**
 
 After log in to panel add server and use '**db'** in hostname/address
 
-**username=userpg
-password=pass123**
+username=**userpg**
+password=**pass123**
 

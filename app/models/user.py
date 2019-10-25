@@ -1,3 +1,5 @@
+import datetime
+
 from app.db import db
 from passlib.hash import pbkdf2_sha256 as sha256
 
@@ -12,6 +14,7 @@ class UserModel(db.Model):
     lastName = db.Column(db.String(80), nullable=False)
     phoneNumber = db.Column(db.String(80), nullable=False)
     birthDate = db.Column(db.DateTime, nullable=True)
+    RegistrationDate = db.Column(db.DateTime, nullable=True)
 
     def __init__(self, username: str, password: str, firstName: str,
                  lastName: str, phoneNumber: str, birthDate = None):
@@ -21,6 +24,7 @@ class UserModel(db.Model):
         self.lastName = lastName
         self.phoneNumber = phoneNumber
         self.birthDate = birthDate
+        self.RegistrationDate = datetime.datetime.now()
 
     @classmethod
     def find_by_username(cls, username: str) -> "UserModel":

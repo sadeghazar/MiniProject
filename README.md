@@ -87,10 +87,12 @@ After running docker-compose you can go to
 default credentials is:
 
 **username = pgadmin4@pgadmin.org
+
 password = admin**
 
 After log in to panel add server and use '**db'** in hostname/address
 
 **username=userpg
+
 password=pass123**
 

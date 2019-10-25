@@ -28,6 +28,7 @@ class User(Resource):
 
         return None, 404
 
+    @jwt_required
     def post(self):
         args = parser.parse_args(strict=True)
         username = args["username"]
@@ -47,6 +48,7 @@ class User(Resource):
             return {"Message": "Created", "user_id": ret.id}, 201
         return {"Message": "Error", "user_id": ret.id}, 500
 
+    @jwt_required
     def put(self, user_id: int):
         try:
             first_name = request.form["first_name"]
@@ -66,6 +68,7 @@ class User(Resource):
         except Exception as ex:
             print(ex)
 
+    @jwt_required
     def delete(self, user_id: int):
         user = UserModel.find_by_id(user_id)
         if user:
